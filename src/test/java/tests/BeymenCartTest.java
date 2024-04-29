@@ -32,8 +32,7 @@ public class BeymenCartTest extends DriverHooks {
         searchResultPage = new SearchResultPage();
         productDetailPage = new ProductDetailPage();
         cartPage = new CartPage();
-
-        String filePath = "src/test/java/data/keywords.xlsx";
+        String filePath = "src/test/java/resources/data/keywords.xlsx";
         homePage.searchWithKeyword(PageHelper.getKeywordFromCell(filePath, 0, 0, 0));
         searchSuggestionPage.searchWithKeyword(PageHelper.getKeywordFromCell(filePath, 0, 1, 0));
         searchResultPage.writeRandomProductInfoToTxtFileAndClick();

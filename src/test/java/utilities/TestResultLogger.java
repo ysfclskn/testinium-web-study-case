@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.TestWatcher;
 
 public class TestResultLogger implements TestWatcher {
 
-
     @Override
     public void testSuccessful(ExtensionContext context) {
         String testName = context.getDisplayName();

@@ -17,31 +17,33 @@ public class ProductDetailPage extends PageHelper {
         PageFactory.initElements(driver, this);
     }
 
-    @FindAll(@FindBy(css = ".m-variation__item:not(.-disabled)"))
-    public List<WebElement> productVariations;
-
     @FindBy(id = "addBasket")
     public WebElement addToCartButton;
-
-    @FindBy(className = "m-notification__title")
-    public WebElement productAddedCartText;
 
     @FindBy(className = "m-notification__button")
     public WebElement goToCartButton;
 
-    public void selectProductVariation() {
-        PageHelper.clickRandomVariation(productVariations);
-    }
+    @FindAll(@FindBy(css = ".m-variation__item:not(.-disabled)"))
+    public List<WebElement> productVariations;
+
+    @FindBy(className = "m-notification__title")
+    public WebElement productAddedCartText;
 
     public void clickAddToCartButton() {
         addToCartButton.click();
+    }
+
+    public void clickGoToCartButton() {
+        goToCartButton.click();
+    }
+
+    public void selectProductVariation() {
+        PageHelper.clickRandomVariation(productVariations);
     }
 
     public void verifyProductAddedCart() {
         Assertions.assertEquals(productAddedCartText.getText(), "Sepete Eklendi");
     }
 
-    public void clickGoToCartButton() {
-        goToCartButton.click();
-    }
+
 }

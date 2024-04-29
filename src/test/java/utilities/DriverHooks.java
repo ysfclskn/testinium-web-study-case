@@ -41,7 +41,7 @@ public class DriverHooks {
         getDriver();
         driver.get(baseConfig.getUrl());
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(7));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         new HomePage().handleAllModals();
     }
 

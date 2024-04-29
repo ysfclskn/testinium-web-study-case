@@ -17,10 +17,16 @@ import java.util.Random;
 
 public class PageHelper extends DriverHooks {
 
-    static String txtFilePath = "src/test/java/data/productInfo.txt";
+    static String txtFilePath = "src/test/java/resources/data/productInfo.txt";
     public static WebDriver driver = getDriver();
-    static WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    static WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
+    public static void clickRandomVariation(List<WebElement> list) {
+        Random random = new Random();
+        int randomIndex = random.nextInt(list.size());
+        list.get(randomIndex).click();
+    }
+    
     public static boolean isElementVisible(WebElement element) {
         try {
             return element.isDisplayed();
@@ -47,10 +53,28 @@ public class PageHelper extends DriverHooks {
         return list.get(randomIndex).getText();
     }
 
-    public static void clickRandomVariation(List<WebElement> list) {
-        Random random = new Random();
-        int randomIndex = random.nextInt(list.size());
-        list.get(randomIndex).click();
+    public static String formatPriceDouble(Double priceDouble) {
+        return priceDouble + ",00 TL";
+    }
+
+    public static List<String> readTxtFile() {
+        try {
+            return Files.readAllLines(Paths.get(txtFilePath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public WebElement xpathByString(String locator, String var) {
+        return driver.findElement(By.xpath((String.format(locator, var))));
+    }
+
+    public static void waitUntilText(WebElement element, String text) {
+        wait.until(ExpectedConditions.textToBePresentInElement(element, text));
+    }
+
+    public static void waitUntilElement(WebElement element) {
+        wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     public static void writeTextToTxtFile(String[] texts) {
@@ -66,28 +90,16 @@ public class PageHelper extends DriverHooks {
 
     }
 
-    public static List<String> readTxtFile() {
+    public static void waitUntilElementInvisibility(WebElement element) {
+        int count = 0;
         try {
-            return Files.readAllLines(Paths.get(txtFilePath));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            while (element.isDisplayed() && count < 10) {
+                count++;
+                Thread.sleep(500L);
+            }
+        } catch (StaleElementReferenceException | InterruptedException | NoSuchElementException ignored) {
+
         }
-    }
 
-    public static String formatPriceStr(String priceStr) {
-        String price = priceStr.replaceAll("[^0-9-.]", "");
-        return price + ",00 TL";
-    }
-
-    public static String formatPriceDouble(Double priceDouble) {
-        return priceDouble + ",00 TL";
-    }
-
-    public WebElement xpathByString(String locator, String var) {
-        return driver.findElement(By.xpath((String.format(locator, var))));
-    }
-
-    public static void waitUntilText(WebElement element, String text) {
-        wait.until(ExpectedConditions.textToBePresentInElement(element, text));
     }
 }

@@ -19,18 +19,37 @@ public class CartPage extends PageHelper {
 
     ResourceFileReader fileReader = new ResourceFileReader();
 
+    @FindBy(id = "nextBtn")
+    public WebElement buyButton;
+
+    @FindBy(css = "#emtyCart > .m-empty__message > .m-empty__messageTitle")
+    public WebElement cartEmptyText;
+
+    @FindBy(className = "m-basket__remove")
+    public WebElement deleteProductFromCartButton;
+
     @FindBy(className = "priceBox__salePrice")
     public WebElement productPriceTextInCart;
 
     @FindBy(id = "quantitySelect0-key-0")
     public WebElement productQtySelectBox;
 
-    @FindBy(className = "m-basket__remove")
-    public WebElement deleteProductFromCartButton;
+    @FindBy(className = "m-basket__content")
+    public WebElement productContent;
 
-    @FindBy(css = "#emtyCart > .m-empty__message > .m-empty__messageTitle")
-    public WebElement cartEmptyText;
+    @FindBy(className = "-success")
+    public WebElement updateCartSuccessMessage;
 
+    public void clickDeleteProductFromCart() {
+        waitUntilElementInvisibility(updateCartSuccessMessage);
+        deleteProductFromCartButton.click();
+    }
+
+    public void increaseProductQty() {
+        waitUntilElement(buyButton);
+        Select qtySelect = new Select(productQtySelectBox);
+        qtySelect.selectByValue("2");
+    }
 
     public void verifyProductPriceQty(int qty) {
         String priceStr = readTxtFile().get(1).replace(" TL", "");
@@ -39,16 +58,8 @@ public class CartPage extends PageHelper {
     }
 
     public void verifyQty(int qty) {
+        waitUntilElement(productContent);
         Assertions.assertEquals(qty + " adet", productQtySelectBox.getAttribute("aria-label"));
-    }
-
-    public void increaseProductQty() {
-        Select qtySelect = new Select(productQtySelectBox);
-        qtySelect.selectByValue("2");
-    }
-
-    public void clickDeleteProductFromCart() {
-        deleteProductFromCartButton.click();
     }
 
     public void verifyProductDeleted() {

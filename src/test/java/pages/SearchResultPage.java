@@ -20,16 +20,16 @@ public class SearchResultPage extends PageHelper {
     @FindAll(@FindBy(css = ".m-productCard__desc"))
     public List<WebElement> productNames;
 
+    public void clickProductName(String productName) {
+        String productNameXpath = String.format("//span[text()='%s']", productName);
+        driver.findElement(By.xpath(productNameXpath)).click();
+    }
+
     public void writeRandomProductInfoToTxtFileAndClick() {
         String randomProductName = " " + getRandomListItemText(productNames);
         WebElement productPriceXpath = xpathByString("//span[text()='%s']//ancestor::div[@class='m-productCard__detail']//span[contains(@class,'m-productCard__newPrice')]", randomProductName);
         String[] productInfo = {randomProductName, productPriceXpath.getText()};
         writeTextToTxtFile(productInfo);
         clickProductName(randomProductName);
-    }
-
-    public void clickProductName(String productName) {
-        String productNameXpath = String.format("//span[text()='%s']", productName);
-        driver.findElement(By.xpath(productNameXpath)).click();
     }
 }
