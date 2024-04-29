@@ -1,10 +1,10 @@
 package config;
 
 public class BaseConfig {
-    String locale = System.getenv("LOCALE");
-    String browser = System.getenv("BROWSER");
-    String env = System.getenv("ENV");
-    String headless = System.getenv("HEADLESS");
+    String locale = System.getenv("local");
+    String browser = System.getenv("browser");
+    String env = System.getenv("env");
+    String headless = System.getenv("headless");
 
     public String getBrowser() {
         return browser != null ? browser : "chrome";

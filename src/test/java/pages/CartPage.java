@@ -32,12 +32,14 @@ public class CartPage extends PageHelper {
     public WebElement cartEmptyText;
 
 
-    public void verifyProductPrice() {
-        Assertions.assertEquals(formatPriceStr(readTxtFile().get(1)), productPriceTextInCart.getText());
+    public void verifyProductPriceQty(int qty) {
+        String priceStr = readTxtFile().get(1).replace(" TL", "");
+        String formattedPrice = formatPriceDouble(Double.parseDouble(priceStr) * qty);
+        waitUntilText(productPriceTextInCart, formattedPrice);
     }
 
-    public void verifyQty() {
-        Assertions.assertEquals("2 adet", productQtySelectBox.getAttribute("aria-label"));
+    public void verifyQty(int qty) {
+        Assertions.assertEquals(qty + " adet", productQtySelectBox.getAttribute("aria-label"));
     }
 
     public void increaseProductQty() {

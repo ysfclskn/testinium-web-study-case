@@ -1,5 +1,6 @@
 package tests;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import pages.*;
@@ -17,6 +18,7 @@ public class BeymenCartTest extends DriverHooks {
 
     @Test
     @Order(1)
+    @DisplayName("Verify homepage is opened")
     public void verifyHomePageIsVisible() {
         homePage = new HomePage();
         homePage.verifyHomePageIsVisible();
@@ -24,6 +26,7 @@ public class BeymenCartTest extends DriverHooks {
 
     @Test
     @Order(2)
+    @DisplayName("Verify product added to cart and product price")
     public void addToCartTest() {
         searchSuggestionPage = new SearchSuggestionPage();
         searchResultPage = new SearchResultPage();
@@ -33,25 +36,28 @@ public class BeymenCartTest extends DriverHooks {
         String filePath = "src/test/java/data/keywords.xlsx";
         homePage.searchWithKeyword(PageHelper.getKeywordFromCell(filePath, 0, 0, 0));
         searchSuggestionPage.searchWithKeyword(PageHelper.getKeywordFromCell(filePath, 0, 1, 0));
-        //TODO Maybe search result verification could be added
         searchResultPage.writeRandomProductInfoToTxtFileAndClick();
         productDetailPage.selectProductVariation();
         productDetailPage.clickAddToCartButton();
         productDetailPage.verifyProductAddedCart();
         productDetailPage.clickGoToCartButton();
-        cartPage.verifyProductPrice();
+        cartPage.verifyProductPriceQty(1);
+        cartPage.verifyQty(1);
     }
 
     @Test
     @Order(3)
-    public void increaseQuantityTest(){
+    @DisplayName("Verify increased product quantity")
+    public void increaseQuantityTest() {
         cartPage.increaseProductQty();
-        cartPage.verifyQty();
+        cartPage.verifyQty(2);
+        cartPage.verifyProductPriceQty(2);
     }
 
     @Test
     @Order(4)
-    public void deleteProductFromCartTest(){
+    @DisplayName("Verify product deleted from cart")
+    public void deleteProductFromCartTest() {
         cartPage.clickDeleteProductFromCart();
         cartPage.verifyProductDeleted();
     }

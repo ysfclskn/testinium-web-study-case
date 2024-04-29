@@ -2,12 +2,15 @@ package utilities;
 
 import org.apache.poi.ss.usermodel.*;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
@@ -16,6 +19,7 @@ public class PageHelper extends DriverHooks {
 
     static String txtFilePath = "src/test/java/data/productInfo.txt";
     public static WebDriver driver = getDriver();
+    static WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
     public static boolean isElementVisible(WebElement element) {
         try {
@@ -75,8 +79,15 @@ public class PageHelper extends DriverHooks {
         return price + ",00 TL";
     }
 
+    public static String formatPriceDouble(Double priceDouble) {
+        return priceDouble + ",00 TL";
+    }
+
     public WebElement xpathByString(String locator, String var) {
         return driver.findElement(By.xpath((String.format(locator, var))));
     }
 
+    public static void waitUntilText(WebElement element, String text) {
+        wait.until(ExpectedConditions.textToBePresentInElement(element, text));
+    }
 }
